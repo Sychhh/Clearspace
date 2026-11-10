@@ -1,0 +1,34 @@
+# This creates billable compute/storage. Review and approve the current cost first.
+services:
+  - type: web
+    name: clearspace
+    runtime: docker
+    plan: standard
+    numInstances: 1
+    autoDeployTrigger: commit
+    healthCheckPath: /healthz
+    disk:
+      name: clearspace-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: AI_PROVIDER
+        value: aion
+      - key: AION_TEXT_MODEL
+        value: aion-labs/aion-3.5-mini
+      - key: AION_API_KEY
+        sync: false
+      - key: APP_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /var/data/clearspace.sqlite
+      - key: WHISPER_EXECUTABLE
+        value: /usr/local/bin/whisper-cli
+      - key: WHISPER_MODEL
+        value: /opt/models/ggml-base.bin
